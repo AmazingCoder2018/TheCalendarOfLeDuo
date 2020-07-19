@@ -14,24 +14,35 @@ namespace TheCalendarOfLeDuo
         protected string RiLiJson = string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
-           string riliPath=  Server.MapPath("rilidata.txt");
-            FileInfo riliDataFile = new FileInfo(riliPath);
-            if(!riliDataFile.Exists)
-            {
-                riliDataFile.Create();
-            }
-            string riliJson=File.ReadAllText(riliPath);
-            if(!string.IsNullOrEmpty(riliJson))
-            {
-                RiLiJson = $"let rilidata={riliJson};"; 
-            }
+           //string riliPath=  Server.MapPath("rilidata.txt");
+           // FileInfo riliDataFile = new FileInfo(riliPath);
+           // if(!riliDataFile.Exists)
+           // {
+           //     riliDataFile.Create();
+           // }
+           // string riliJson=File.ReadAllText(riliPath);
+           // if(!string.IsNullOrEmpty(riliJson))
+           // {
+           //     RiLiJson = $"let rilidata={riliJson};"; 
+           // }
             //当页面上有服务器端控件时，IsPostBack才有用
             //if(IsPostBack)
             string action = Request["action"];
             if(string.IsNullOrEmpty(action))
             {
                 string dataPath = Server.MapPath(@"/App_Data/data.txt");
-                string data = File.ReadAllText(dataPath, Encoding.UTF8);
+                FileInfo riliDataFile = new FileInfo(dataPath);
+                if (!riliDataFile.Exists)
+                {
+                   var datafile= riliDataFile.Create();
+                    datafile.Dispose();
+                }
+
+                string data = File.ReadAllText(dataPath, Encoding.UTF8) ?? "''";
+                if (string.IsNullOrEmpty(data))
+                {
+                    data = "''";
+                }
                 //页面第一次打开
                 RiLiJson = $"let rilidata={data};";
             }

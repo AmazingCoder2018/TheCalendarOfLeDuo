@@ -60,7 +60,16 @@
 </head>
 
 <body>
-   
+    ctrl+s:保存数据
+     <br />
+    ctrl+q:退出显示备注内容模式, 再按 ctrl+q 进入显示备注内容模式
+    <br /><br />
+    <!--提示框字体颜色参考
+        goldenrod,darkorange,blue,blueviolet,brown
+        -->
+   <div style="width:400px;height:200px;position:fixed;border:1px solid lightgray;
+opacity: 0.6; background-color:lightgray;font-size:28px;color:brown;
+left:-500px" id="showmore"></div>
     <div class="container" id="container">
 
 
@@ -192,7 +201,8 @@
                 }, 300);
                 
             }
-            
+
+            setTimeout(onTextAreaMouseIn, 1000);
         })
 
         function initCal(yy, mm)
@@ -259,6 +269,7 @@
 
         }
 
+        // ctrl+s 保存
         function save()
         {
             let data = {};
@@ -280,7 +291,10 @@
             //content = `var rilidata=` + content+";";
             //var blob = new Blob([content], { type: "text/plain;charset=UTF-8" });
             //saveAs(blob, "data.js");
-            $.post("/Index.aspx?action=savedata&data=" + JSON.stringify(data)).then(function (response)
+            //地址栏有长度限制
+            //$.post("/Index.aspx?action=savedata&data=" + JSON.stringify(data)).then(function (response)
+            let jsonData = { "action": "savedata", data: JSON.stringify(data) };
+            $.post("/Index.aspx", jsonData).then(function (response)
             {
                 //console.log(response);
                 if (response == "ok")
@@ -291,16 +305,62 @@
             });
         }
 
-        //重写 ctrl+s
+        //重写 ctrl 组合键
         document.addEventListener('keydown', function (e)
         {
-            if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey))
+            let ctrlKey = navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey;
+            if (ctrlKey)
             {
-                e.preventDefault();
-                save();
+                if (e.keyCode == 83)
+                {
+                    //ctrl+s 保存
+                    e.preventDefault();
+                    save();
+                }
+                else if (e.keyCode == 81)
+                {
+                    //ctrl+q 退出提示框
+                    //e.preventDefault();
+                    $("#showmore").css({ "left": "-500px" });
+                    isShowMore = !isShowMore;
+                }
             }
+            
         });
+        
 
+
+        //ctrl+q:退出显示textarea内容模式, 再按 ctrl+q 进入显示textarea内容模式
+        let isShowMore = true; // 页面打开后,默认显示textarea内容模式
+        function onTextAreaMouseIn()
+        {
+            $("textarea").mouseover(function (e)
+            {
+                if (!isShowMore) return;
+
+                var xx = e.originalEvent.x || e.originalEvent.layerX || 0;
+                var yy = e.originalEvent.y || e.originalEvent.layerY || 0;
+                //$(this).text(xx + '---' + yy);
+                xx += 80;
+                if (xx > 1000)
+                {
+                    xx -= 520;
+                }
+                let text = $(this).val();
+                //console.log(text);
+                //yy += 5;
+                if (text)
+                {
+                    $("#showmore").css({ "left": xx + "px", "top": yy + "px", }).text(text);
+                }
+                else
+                {
+                    $("#showmore").css({ "left": "-500px" }).text("");
+                }
+                
+            });
+            
+        }
     </script>
 </body>
 </html>
