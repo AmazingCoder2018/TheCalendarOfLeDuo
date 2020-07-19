@@ -77,8 +77,8 @@ left:-500px" id="showmore"></div>
 
     </div>
 
-    <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.js"></script>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script src="/js/FileSaver.js"></script>
     <%--<script src="data.js"></script>--%>
 
     <script>
