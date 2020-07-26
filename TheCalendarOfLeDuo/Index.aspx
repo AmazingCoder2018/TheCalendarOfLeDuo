@@ -79,6 +79,7 @@ left:-500px" id="showmore"></div>
 
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script src="/js/FileSaver.js"></script>
+    <script src="/js/lunarVSsolar.js"></script>
     <%--<script src="data.js"></script>--%>
 
     <script>
@@ -190,17 +191,17 @@ left:-500px" id="showmore"></div>
             //    }
             //})
             <%= RiLiJson %>
-            if (typeof (rilidata) != undefined)
-            {
-                setTimeout(function ()
-                {
-                    for (key in rilidata)
-                    {
-                        $('#' + key).val(rilidata[key]);
-                    }
-                }, 300);
+            //if (typeof (rilidata) != undefined)
+            //{
+            //    setTimeout(function ()
+            //    {
+            //        for (key in rilidata)
+            //        {
+            //            $('#' + key).val(rilidata[key]);
+            //        }
+            //    }, 300);
                 
-            }
+            //}
 
             setTimeout(onTextAreaMouseIn, 1000);
         })
@@ -240,7 +241,7 @@ left:-500px" id="showmore"></div>
             //}
 
 
-            let nextLine = week % 7 + 0 - 1 < 0;
+            let nextLine = week % 7 + 0 - 1 < 0;//解决1号出现在最后一行的问题
             for (var i = 0; i < days; i++)
             {
                 let index = i + 1;
@@ -248,21 +249,33 @@ left:-500px" id="showmore"></div>
                 let img = daysImg[index];
 
                 let yu = week % 7 + i - 1;
-
+                let nongli = Lunar.toLunar(yy, mm, i+1); 
+                //$td.data("lunarMonth", nongli[5]);
+                //$td.data("lunarDay", nongli[6]);
                 let textarea = `<textarea  id='${yy}_${mm}_${i + 1}'></textarea>`;
                 if (nextLine)
                 {
                     //$td.eq(7 + yu).text(i + 1).css("background-image", "url(" + img + ")");
-                    $td.eq(7 + yu).html(textarea).css("background-image", "url(" + img + ")");
-
+                   
+                    let $currentTd = $td.eq(7 + yu);
+                    $currentTd.html(textarea).css("background-image", "url(" + img + ")");
+                    //$currentTd.data("lunarMonth", nongli[5]);
+                    //$currentTd.data("lunarDay", nongli[6]);
+                    $currentTd.attr("title", nongli[5] + nongli[6]);
                 }
                 else
                 {
 
                     //$td.eq(yu).text(i + 1).css("background-image", "url(" + img + ")");
-                    $td.eq(yu).html(textarea).css("background-image", "url(" + img + ")");
-                }
+                    //$td.eq(yu).html(textarea).css("background-image", "url(" + img + ")");
+                    $currentTd = $td.eq(yu);
+                    $currentTd.html(textarea).css("background-image", "url(" + img + ")");
+                    //$currentTd.data("lunarMonth", nongli[5]);
+                    //$currentTd.data("lunarDay", nongli[6]);
 
+                    $currentTd.attr("title", nongli[5] + nongli[6]);
+                }
+                
             }
 
 
