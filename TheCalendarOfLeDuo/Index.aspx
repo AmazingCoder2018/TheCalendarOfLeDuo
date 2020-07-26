@@ -191,17 +191,17 @@ left:-500px" id="showmore"></div>
             //    }
             //})
             <%= RiLiJson %>
-            //if (typeof (rilidata) != undefined)
-            //{
-            //    setTimeout(function ()
-            //    {
-            //        for (key in rilidata)
-            //        {
-            //            $('#' + key).val(rilidata[key]);
-            //        }
-            //    }, 300);
+            if (typeof (rilidata) != undefined)
+            {
+                setTimeout(function ()
+                {
+                    for (key in rilidata)
+                    {
+                        $('#' + key).val(rilidata[key]);
+                    }
+                }, 300);
                 
-            //}
+            }
 
             setTimeout(onTextAreaMouseIn, 1000);
         })
